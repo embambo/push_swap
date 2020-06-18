@@ -6,7 +6,7 @@
 #    By: embambo <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/15 13:18:34 by embambo           #+#    #+#              #
-#    Updated: 2020/06/16 14:08:13 by embambo          ###   ########.fr        #
+#    Updated: 2020/06/18 10:12:33 by embambo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ SLIB = slib.a
 LIBFT_F = ../libft/
 LIBFT = libft.a
 OUT = ../
-CFILES = checker.c check1.c
+CFILES = checker.c 
 CFILES += operations.c operations2.c operations3.c
 OFILES = $(CFILES:.c=.o)
 

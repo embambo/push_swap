@@ -6,7 +6,7 @@
 /*   By: embambo <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 13:06:58 by embambo           #+#    #+#             */
-/*   Updated: 2020/06/18 09:32:30 by embambo          ###   ########.fr       */
+/*   Updated: 2020/06/18 10:11:27 by embambo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,23 @@ static void		ft_use_commands(t_oper *commands, t_stack *stks)
 		ft_putstr("OK\n");
 	else
 		ft_putstr("KO\n");
+}
+
+void				printing_stack2(int a, int size)
+{
+	int i;
+
+	i = 0;
+	if (a < 0)
+		exit(1);
+	while (i <= size - 1)
+	{
+		ft_putnbr(a);
+		ft_putstr(",");
+		ft_putnbr(size);
+	}
+	write(1, "\n", 1);
+	return ;
 }
 
 static int		ft_command_index(char *str)
