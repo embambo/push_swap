@@ -6,7 +6,7 @@
 #    By: embambo <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/15 13:18:34 by embambo           #+#    #+#              #
-#    Updated: 2020/06/18 10:12:33 by embambo          ###   ########.fr        #
+#    Updated: 2020/06/20 09:32:19 by embambo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,9 @@ SLIB = slib.a
 LIBFT_F = ../libft/
 LIBFT = libft.a
 OUT = ../
-CFILES = checker.c 
-CFILES += operations.c operations2.c operations3.c
+CFILES = checker.c build_stack.c check_argc.c check_min_max.c check_spaces.c 
+CFILES += count_numbs.c do_ops.c join_argc.c next_num.c print_stack.c push.c
+CFILES += r_rotate.c rotate.c swap.c validate_stack.c
 OFILES = $(CFILES:.c=.o)
 
 all: $(NAME)
