@@ -6,7 +6,7 @@
 #    By: embambo <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/15 13:18:34 by embambo           #+#    #+#              #
-#    Updated: 2020/06/11 14:22:24 by embambo          ###   ########.fr        #
+#    Updated: 2020/06/20 09:33:24 by embambo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,7 @@
 NAME = slib.a
 RM = /bin/rm -rfv
 RMS = /bin/rm -rf
-CFILES = is_sorted.c function.c is_sorted2.c new_list_stack.c operations.c
-CFILES += operations2.c operations3.c print_stack.c validators.c
+CFILES = ft_atoi.c
 OFILES = $(CFILES:.c=.o)
 
 all: $(NAME)
