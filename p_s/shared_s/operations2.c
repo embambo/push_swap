@@ -6,91 +6,73 @@
 /*   By: embambo <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/18 14:20:28 by embambo           #+#    #+#             */
-/*   Updated: 2020/06/16 13:59:35 by embambo          ###   ########.fr       */
+/*   Updated: 2020/06/25 13:45:17 by embambo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../shared_s/push_swap.h"
+#include "../push_swap_s/push_swap.h"
 
-/*
-** rotate a - shift up all elements of stack a by 1.
-** The first element becomes the last one.
-*/
-
-void			ra(t_stack *stks)
+void	rra(t_stacks *stacks)
 {
-	int			elems;
-	int			top;
+	int i;
+	int tmp;
 
-	ft_strcpy(stks->last, "ra");
-	stks->opnum = 5;
-	if (stks->elems_a < 2)
-		return (ft_no_change(stks));
-	elems = stks->elems_a;
-	top = stks->top_a;
-	stks->buf_a = stks->stk_a[top];
-	while (elems > 0)
+	if (stacks->a_size < 2)
+		return ;
+	i = stacks->a_size - 1;
+	tmp = stacks->a_stack[i];
+	while (i > 0)
 	{
-		if ((top + 1) == stks->size - 1)
-		{
-			stks->stk_a[top] = stks->stk_a[top + 1];
-			break ;
-		}
-		stks->stk_a[top] = stks->stk_a[top + 1];
-		top++;
-		elems--;
+		stacks->a_stack[i] = stacks->a_stack[i - 1];
+		i--;
 	}
-	stks->stk_a[((stks->size) - 1)] = stks->buf_a;
-	ft_print_stacks(stks);
+	stacks->a_stack[0] = tmp;
+	ft_putstr("rra\n");
 }
 
-/*
-** rotate b - shift up all elements of stack b by 1.
-** The first element becomes the last one.
-*/
-
-void			rb(t_stack *stks)
+void	rrb(t_stacks *stacks)
 {
-	int			elems;
-	int			top;
+	int i;
+	int tmp;
 
-	ft_strcpy(stks->last, "rb");
-	stks->opnum = 6;
-	if (stks->elems_b < 2)
-		return (ft_no_change(stks));
-	elems = stks->elems_b;
-	top = stks->top_b;
-	stks->buf_b = stks->stk_b[top];
-	while (elems > 0)
+	if (stacks->b_size < 2)
+		return ;
+	i = stacks->b_size - 1;
+	tmp = stacks->b_stack[i];
+	while (i > 0)
 	{
-		if ((top + 1) < stks->size)
-		{
-			stks->stk_b[top] = stks->stk_b[top + 1];
-			top++;
-		}
-		elems--;
+		stacks->b_stack[i] = stacks->b_stack[i - 1];
+		i--;
 	}
-	stks->stk_b[((stks->size) - 1)] = stks->buf_b;
-	ft_print_stacks(stks);
+	stacks->b_stack[0] = tmp;
+	ft_putstr("rrb\n");
 }
 
-/*
-**  ra and rb at the same time.
-*/
-
-void			rr(t_stack *stks)
+void	rrr(t_stacks *stacks)
 {
-	int			buffer;
+	int i;
+	int tmp;
 
-	ft_strcpy(stks->last, "rr");
-	stks->opnum = 7;
-	if (stks->elems_a < 2 || stks->elems_b < 2)
-		return (ft_no_change(stks));
-	buffer = stks->flag;
-	stks->flag = 0;
-	ra(stks);
-	rb(stks);
-	stks->flag = buffer;
-	ft_strcpy(stks->last, "rr");
-	ft_print_stacks(stks);
+	if (stacks->a_size > 1)
+	{
+		i = stacks->a_size - 1;
+		tmp = stacks->a_stack[i];
+		while (i-- > 0)
+		{
+			stacks->a_stack[i + 1] = stacks->a_stack[i];
+		}
+		stacks->a_stack[0] = tmp;
+	}
+	if (stacks->b_size > 1)
+	{
+		i = stacks->b_size - 1;
+		tmp = stacks->b_stack[i];
+		while (i > 0)
+		{
+			stacks->b_stack[i] = stacks->b_stack[i - 1];
+			i--;
+		}
+		stacks->b_stack[0] = tmp;
+	}
+	ft_putstr("rrr\n");
 }

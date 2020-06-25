@@ -6,7 +6,7 @@
 #    By: embambo <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/15 13:18:34 by embambo           #+#    #+#              #
-#    Updated: 2020/06/20 09:33:24 by embambo          ###   ########.fr        #
+#    Updated: 2020/06/25 15:10:41 by embambo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 NAME = slib.a
 RM = /bin/rm -rfv
 RMS = /bin/rm -rf
-CFILES = ft_atoi.c
+CFILES = operations.c operations1.c operations2.c ft_atoi.c ft_atoll.c
 OFILES = $(CFILES:.c=.o)
 
 all: $(NAME)
