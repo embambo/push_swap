@@ -6,7 +6,7 @@
 #    By: ashongwe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/04 15:40:51 by ashongwe          #+#    #+#              #
-#    Updated: 2019/09/17 09:35:25 by embambo          ###   ########.fr        #
+#    Updated: 2020/06/25 15:13:07 by embambo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ SRCS=ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c \
 	 ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c \
 	 \
 	 ft_lstnew.c ft_lstdelone.c ft_lstdel.c ft_lstadd.c ft_lstiter.c \
-	 ft_lstmap.c ft_strsplitnum.c\
+	 ft_lstmap.c ft_strsplitnum.c \
 
 OBJECTS=ft_memset.o ft_bzero.o ft_memcpy.o ft_memccpy.o ft_memmove.o \
 		ft_memchr.o ft_memcmp.o ft_strlen.o ft_strdup.o ft_strcpy.o \
