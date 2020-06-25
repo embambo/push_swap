@@ -6,72 +6,36 @@
 /*   By: embambo <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 11:51:59 by embambo           #+#    #+#             */
-/*   Updated: 2020/06/15 12:24:30 by embambo          ###   ########.fr       */
+/*   Updated: 2020/06/25 12:10:34 by embambo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void			sort_5_helper1(t_array *array)
+static	void		sort_3(t_stacks *stacks)
 {
-	int i;
+	int	max_i;
 
-	i = 0;
-	if (array->array_a[0] > array->array_b[0])
+	if(stacks->a_size == 2)
 	{
-		ft_pa(array);
+		sa(stacks);
 		return ;
 	}
-	if (array->array_b[0] > array->array_a[0] &&
-			array->array_b[0] < array->array_a[i + 1])
-	{
-		operations_h3(array);
-		return ;
-	}
-	if (array->array_b[0] < array->array_a[array->size_a - 1] &&
-			array->array_a[0] < array->array_b[0] &&
-			array->array_b[0] > array->array_a[i + 1])
-	{
-		operations_h(array);
-		return ;
-	}
-	if (array->array_b[0] > array->array_a[array->size_a - 1])
-	{
-		operations_h1(array);
-	}
+	max_i = find_max_num(stacks->a_stack, stacks->a_size);
+	if(max_i == 0)
+		ra(stacks);
+	if(max_i == 1)
+		rra(stacks);
+	if(stacks->a_stack[0] > stacks->a_stack[1])
+		sa(stacks);
 }
 
-void			sort_5_helper2(t_array *array)
+void		sort(t_stacks *stacks)
 {
-	int i;
-	int j;
-
-	i = 0;
-	j = array->size_a;
-	if (array->array_a[0] > array->array_b[0])
-		ft_pa(array);
-	if (array->array_b[0] > array->array_a[0] &&
-			array->array_a[i + 1] > array->array_b[0])
-	{
-		operations_h3(array);
+	if(is_it_sorted(stacks->a_stack, stacks->a_size) && stacks->b_size == 0)
 		return ;
-	}
-	if (array->array_b[0] > array->array_a[i + 1] &&
-			array->array_b[0] < array->array_a[j - 1])
-	{
-		operations_h2(array);
-		return ;
-	}
-	if (array->array_b[0] > array->array_a[array->size_a - 1])
-	{
-		operations_h1(array);
-		return ;
-	}
-}
-
-void			sort_5_helper5(t_array *array)
-{
-	ft_pb(array);
-	ft_pb(array);
-	return ;
+	if(stacks->a_size <= 3)
+		return (sort_3(stacks));
+	else
+		sort_large(stacks);
 }

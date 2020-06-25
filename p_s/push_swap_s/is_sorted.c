@@ -6,33 +6,45 @@
 /*   By: embambo <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/16 13:07:02 by embambo           #+#    #+#             */
-/*   Updated: 2020/06/15 12:14:30 by embambo          ###   ########.fr       */
+/*   Updated: 2020/06/25 12:05:05 by embambo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <stdio.h>
 
-int			is_sorted(int *array, int len)
+int	is_it_sorted(int *stacks, int size)
 {
-	int i;
-
+	int	i;
+	if(size == 1)
+		return(1);
 	i = 0;
-	while (i < len - 1)
+	while(i < size - 1)
 	{
-		if (array[i] < array[i + 1])
-			i++;
-		else
+		if(stacks[i] > stacks[i + 1])
 			return (0);
+		i++;
 	}
 	return (1);
 }
 
-void		free_array(t_array *array)
+void	delete_stacks(t_stacks **stacks)
 {
-	free(array->array_a);
-	free(array->array_b);
-	free(array->array_c);
-	free(array);
-	array = NULL;
+	if(*stacks)
+	{
+		if((*stacks)->a_stack)
+			free((*stacks)->a_stack);
+		if((*stacks)->b_stack)
+			free((*stacks)->b_stack);
+		free(*stacks);
+		*stacks = NULL;
+	}
+}
+
+void	delete_moves(t_moves **moves)
+{
+	free((*moves)->a_rot);
+	free((*moves)->b_rot);
+	free((*moves)->c_rot);
+	free(*moves);
+	*moves = NULL;
 }

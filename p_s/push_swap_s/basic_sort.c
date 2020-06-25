@@ -6,107 +6,68 @@
 /*   By: embambo <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/16 14:09:57 by embambo           #+#    #+#             */
-/*   Updated: 2020/06/15 15:09:48 by embambo          ###   ########.fr       */
+/*   Updated: 2020/06/25 12:04:43 by embambo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void		sort_3(t_array *array)
+int		find_max_num(int *stack, int size)
 {
-	int max_index;
+	int	i;
+	int	max;
+	int	match;
 
-	if (array->size_a == 1)
-		return ;
-	if (array->size_a == 2)
-	{
-		if (array->array_a[0] > array->array_a[1])
-			ft_sa(array);
-		return ;
-	}
-	else if (array->size_a == 3)
-	{
-		max_index = max_elem(array->array_a, array->size_a);
-		if (max_index == 0)
-			ft_ra(array);
-		if (max_index == 1)
-			ft_rra(array);
-		if (array->array_a[0] > array->array_a[1])
-			ft_sa(array);
-	}
-}
-
-int			max_elem(int *array, int len)
-{
-	int i;
-	int temp;
-	int index;
-
+	if(size == 0)
+		return (-1);
 	i = 0;
-	temp = array[i];
-	index = 0;
-	while (i < len)
+	max = 0;
+	match = 0;
+	max = stack[i];
+	while(i < size)
 	{
-		if (temp < array[i])
+		if(max < stack[i])
 		{
-			temp = array[i];
-			index = i;
+			max = stack[i];
+			match = i;
 		}
 		i++;
 	}
-	return (index);
+	return (match);
 }
 
-void		sort_5_helper7(t_array *array)
+int	find_min_num(int *stack, int size)
 {
-	while (array->size_b > 0)
-	{
-		if (array->size_a == 3)
-			sort_5_helper1(array);
-		if (array->size_a == 4)
-			sort_5_helper2(array);
-	}
-}
+	int	i;
+	int	min;
+	int	match;
 
-void		sort_5(t_array *array)
-{
-	int i;
-	int j;
-
+	if(size == 0)
+		return (-1);
 	i = 0;
-	j = array->size_a;
-	if (array->size_a == 1)
-		return ;
-	else if (array->size_a == 2)
+	match = 0;
+	min = stack[i];
+	while(i < size)
 	{
-		if (array->array_a[0] > array->array_a[1])
-			ft_sa(array);
-		return ;
+		if(min > stack[i])
+		{
+			min = stack[i];
+			match = i;
+		}
+		i++;
 	}
-	else if (array->size_a == 5)
-	{
-		if (is_sorted(array->array_a, array->size_a))
-			return ;
-		sort_5_helper5(array);
-		sort_3(array);
-		if (array->array_b[0] < array->array_b[1])
-			ft_sb(array);
-		sort_5_helper7(array);
-		print_stack(array->array_a, array->size_a);
-		return ;
-	}
+	return (match);
 }
 
-void		sort(t_array *array)
+void	first_min(t_stacks *stacks)
 {
-	if (is_sorted(array->array_a, array->size_a) && array->size_b == 0)
-		return ;
-	if (array->size_a <= 3)
-		return (sort_3(array));
-	else if (array->size_a == 5)
-		return (sort_5(array));
-	else if (array->size_a > 5 && array->size_a <= 100)
-		return (portions(array));
+	int	min;
+
+	min = find_min_num(stacks->a_stack, stacks->a_size);
+	if(min <= stacks->a_size / 2)
+		while(min--)
+			ra(stacks);
 	else
-		portions_500(array);
+		while((stacks->a_size - min++) > 0)
+			rra(stacks);
 }

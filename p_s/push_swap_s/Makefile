@@ -15,14 +15,10 @@ CFILES += operations_helper.c
 CFILES += portions.c
 CFILES += is_sorted.c
 CFILES += portions_helper.c
-CFILES += push_back_to_a.c
 CFILES += rr_multi.c
 CFILES += rra_multi.c
 CFILES += sort_5_helper.c
 CFILES += push_to_b_helper.c
-CFILES += operations.c 
-CFILES += operations1.c
-CFILES += operations2.c 
 CFILES += parse_args.c
 OFILES = $(CFILES:.c=.o)
 

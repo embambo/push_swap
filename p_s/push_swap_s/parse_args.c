@@ -6,91 +6,123 @@
 /*   By: embambo <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/13 08:39:49 by embambo           #+#    #+#             */
-/*   Updated: 2020/06/15 15:36:53 by embambo          ###   ########.fr       */
+/*   Updated: 2020/06/25 15:19:34 by embambo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <stdio.h>
-#include <unistd.h>
 
-static int			validate_args(char **argv, char *arg, int begin)
+static int	int_validate(char **split, char *nbr, int bgn)
 {
 	int i;
 
 	i = 0;
-	while (*arg && arg[i]  != '\0')
+	while (nbr[i] == '-' || nbr[i] == '+')
 	{
-		if (ft_atoi(arg) > 2147483647 || ft_atoi(arg) < INT_MIN)
-		{
-			if (!ft_isdigit(arg[i]) && arg[i] != '-')
-				return (0);
-		}
+		if (!ft_isdigit(nbr[i + 1]))
+			return (0);
 		i++;
 	}
-	while (argv[begin] && argv && arg)
+	while (nbr && nbr[i] != '\0')
 	{
-		if (ft_strequ(argv[begin], arg))
+		if (!ft_isdigit(nbr[i]))
 			return (0);
-		begin++;
+		i++;
+	}
+	if (ft_ato_longlong(nbr) > 2147483647 || ft_ato_longlong(nbr) < -2147483647)
+		return (0);
+	while (split[bgn] && split && nbr)
+	{
+		if (ft_strequ(split[bgn], nbr))
+			return (0);
+		bgn++;
 	}
 	return (1);
 }
 
-void				init_array_struct(t_array *array, int argc, int x)
+static	int	build_stacks(t_stacks *stacks, char **split, int count)
 {
-	array->array_a = (int*)malloc(sizeof(int) * argc);
-	array->array_b = (int*)malloc(sizeof(int) * argc);
-	array->array_c = (int*)malloc(sizeof(int) * argc);
-	if (x == 0)
+	int	i;
+
+	i = -1;
+	stacks->a_stack = (int*)malloc(sizeof(int)* count);
+	stacks->b_stack = (int*)ft_memalloc(sizeof(int) * count);
+	stacks->a_size = count;
+	stacks->b_size = 0;
+	while(++i < count)
 	{
-		array->size_a = argc;
-		array->size_b = 0;
-		array->size_c = argc;
+		if(int_validate(split, split[i], i + 1))
+			stacks->a_stack[i] = ft_atoi(split[i]);
+		else
+		{
+			delete_stacks(&stacks);
+			ft_putstr_fd("Error\n", 2);
+			exit(1);
+		}
 	}
-	else
+	return (1);
+}
+
+static int	split_count(char **split)
+{
+	int	count;
+
+	count = 0;
+	while(*(split++))
+		count++;
+	return (count);
+}
+
+static	void	delete_split(char ***split)
+{
+	int	i;
+	
+	i = 0;
+	if(*split)
 	{
-		array->size_a = argc - 1;
-		array->size_b = 0;
-		array->size_c = argc - 1;
+		while((*split)[i])
+			free((*split)[i++]);
+		free(*split);
+		*split = NULL;
 	}
 }
 
-void				print_stack(int *a, int len)
-{
-	int i;
 
-	i = 0;
-	if (a < 0)
-		exit(1);
-	while (i <= len - 1)
+void		check_argv(t_stacks *stacks, char **argv, int argc)
+{
+	char	**split;
+
+	split = NULL;
+	if(argc == 2)
 	{
-		ft_putnbr(a[i++]);
-		ft_putstr(" ");
+		split = ft_strsplit(argv[1], ' ');
+		if(!build_stacks(stacks, split, split_count(split)))
+		{
+			delete_split(&split);
+			exit(1);
+		}
+		delete_split(&split);
 	}
-	write(1, "\n", 1);
+	else if (!build_stacks(stacks, (argv + 1), argc - 1))
+		exit(1);
 	return ;
 }
 
-t_array				*parse_args(int argc, char **argv, t_array *array, int x)
+int		check_if_dup(int argc, char **argv)
 {
 	int i;
-
-	i = 0;
-	while (i < argc - x)
+	int j;
+	i = 1;
+	while (i < argc - 1)
 	{
-		if (validate_args(argv, argv[i], i + x))
+		j = i + 1;
+		while (j < argc)
 		{
-			array->array_a[i] = ft_atoi(argv[i + x]);
-			array->array_c[i] = ft_atoi(argv[i + x]);
-		}
-		else
-		{
-			free_array(array);
-			ft_putstr_fd("Error\n", 2);
-			exit (1);
+			if (ft_atoi(argv[j]) == ft_atoi(argv[i]))
+				return (1);
+			j++;
 		}
 		i++;
 	}
-	return (array);
+	return (0);
 }

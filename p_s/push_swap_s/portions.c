@@ -6,91 +6,99 @@
 /*   By: embambo <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 12:37:54 by embambo           #+#    #+#             */
-/*   Updated: 2020/06/15 12:18:19 by embambo          ###   ########.fr       */
+/*   Updated: 2020/06/25 12:06:40 by embambo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "push_swap.h"
 
-void		indexes(t_array *array, int *d)
+static	int	find_b_place(int *stacks, int size, int elem, char **rot)
 {
-	if (d[1] == 20000 && d[2] == 20000)
-	{
-		d[5] = d[5] + 19;
-		d[6] = d[6] + 19;
-	}
+	int	i;
+	int	place;
+
+	i = 0;
+	place = 0;
+	if(size == 2 && elem > stacks[0] && elem < stacks[size - 1])
+		place = 0;
+	else if(size == 2 && elem < stacks[0] && elem > stacks[size - 1])
+		place = 1;
+	else if(elem > stacks[find_max_num(stacks, size)] || 
+			elem < stacks[find_min_num(stacks, size)])
+		place = find_max_num(stacks, size);
 	else
-		ft_pb(array);
+		while (i < size)
+		{
+			if(elem < stacks[i] && ((i + 1 < size && elem > stacks[i + 1]) ||
+						(i + 1 == size && elem > stacks[0])))
+			{
+				place = i + 1;
+				break ;
+			}
+			i++;
+		}
+	return (find_b_rot(size, place , rot));
 }
 
-void		portions_find(t_array *array, int *d)
+static	int	find_common_moves(t_moves *moves)
 {
-	if ((d[0] = portions_helper(array->array_a, array->array_c, d,
-					array->size_a)) != -1 && d[0] < d[1])
-		d[1] = d[0];
-	if ((d[0] = portions_from_end(array->array_a, array->array_c, d,
-					array->size_a)) != -1 && d[0] < d[2])
-		d[2] = d[0];
-	if (d[1] > d[3] - d[2] && d[2] < 2000)
-		rra_counter(array, (array->size_a - d[2]));
-	else if (d[1] < 2000)
-		ra_counter(array, d[1]);
-}
+	int	common;
 
-void		portions(t_array *array)
-{
-	int d[7];
-
-	d[0] = 0;
-	d[4] = 0;
-	d[5] = 0;
-	d[6] = 19;
-	d[3] = array->size_a - 1;
-	bubble_sort(array->array_c, array->size_c);
-	while (d[4] < array->size_a && array->size_c)
+	common = 0;
+	if ((ft_strequ(moves->a_rot, "rra") && (ft_strequ(moves->b_rot, "rrb"))) ||
+			(ft_strequ(moves->a_rot , "ra") && (ft_strequ(moves->b_rot, "rb"))))
 	{
-		d[1] = 20000;
-		d[2] = 20000;
-		portions_find(array, d);
-		indexes(array, d);
-		d[0] = array->size_a - 1;
+		common = (moves->a_moves > moves->b_moves ? moves->b_moves : moves->a_moves);
+		if(common)
+		{
+			moves->c_rot = ft_strcpy(moves->c_rot, moves->a_rot);
+			moves->c_rot[ft_strlen(moves->c_rot) - 1] = 'r';
+			moves->b_moves -= common;
+			moves->a_moves -= common;
+		}
 	}
-	d[4]++;
-	push_back_to_a(array, array->array_b, array->size_b);
-	return ;
+	return (common);
 }
 
-void		indexes_for_500(t_array *array, int *d)
+
+
+static t_moves	*calculated_moves_a_to_b(t_stacks *stacks, int position)
 {
-	if (d[1] == 20000 && d[2] == 20000)
-	{
-		d[5] = d[5] + 45;
-		d[6] = d[6] + 45;
-	}
-	else
-		ft_pb(array);
+	t_moves	*moves;
+
+	moves = (t_moves*)malloc(sizeof(t_moves));
+	moves->a_rot = ft_strnew(3);
+	moves->b_rot = ft_strnew(3);
+	moves->c_rot = ft_strnew(3);
+	moves->elem = stacks->a_stack[position];
+	moves->a_moves = find_a_rot(stacks->a_size, position, &(moves->a_rot));
+	moves->b_moves = find_b_place(stacks->b_stack, stacks->b_size,stacks->a_stack[position], &(moves->b_rot));
+	moves->c_moves = find_common_moves(moves);
+	moves->tot = moves->a_moves + moves->b_moves + moves->c_moves + 1;
+       return (moves);	
+
 }
 
-void		portions_500(t_array *array)
+t_moves		*least_moves_betweenA_B(t_stacks *stacks)
 {
-	int d[7];
+	int		i;
+	t_moves		*top_moves;
+	t_moves		*moves;
 
-	d[0] = 0;
-	d[4] = 0;
-	d[5] = 0;
-	d[6] = 45;
-	d[3] = array->size_a - 1;
-	bubble_sort(array->array_c, array->size_c);
-	while (d[4] < array->size_a && array->size_c)
+	i = 0;
+	while(i < stacks->a_size)
 	{
-		d[1] = 20000;
-		d[2] = 20000;
-		portions_find(array, d);
-		indexes_for_500(array, d);
-		d[0] = array->size_a - 1;
+		moves = calculated_moves_a_to_b(stacks, i);
+		if (i == 0)
+			top_moves = moves;
+		else if(top_moves->tot > moves->tot)
+		{
+			delete_moves(&top_moves);
+			top_moves = moves;
+		}
+		else
+			delete_moves(&moves);
+		i++;
 	}
-	d[4]++;
-	push_back_to_a(array, array->array_b, array->size_b);
-	return ;
+	return (top_moves);
 }

@@ -6,41 +6,70 @@
 /*   By: embambo <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 11:07:55 by embambo           #+#    #+#             */
-/*   Updated: 2020/06/15 12:14:16 by embambo          ###   ########.fr       */
+/*   Updated: 2020/06/25 12:04:52 by embambo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "push_swap.h"
 
-void		swap(int *a, int *b)
+void		exc_rra_ch(t_stacks *stacks)
 {
-	int temp;
+	int	i;
+	int	tmp;
 
-	temp = *a;
-	*a = *b;
-	*b = temp;
+	if(stacks->a_size < 2)
+		return ;
+	i = stacks->a_size - 1;
+	tmp = stacks->a_stack[i];
+	while(i > 0)
+	{
+		stacks->a_stack[i] = stacks->a_stack[i - 1];
+		i--;
+	}
+	stacks->a_stack[0] = tmp;
 }
 
-void		bubble_sort(int *a, int len)
+void		exc_rrb_ch(t_stacks *stacks)
 {
-	int i;
-	int j;
+	int	i;
+	int	tmp;
 
-	j = 0;
-	i = 0;
-	while (i < len)
+	if(stacks->b_size < 2)
+		return ;
+	i = stacks->b_size - 1;
+	tmp = stacks->b_stack[i];
+	while(i > 0)
 	{
-		while (j < len + 1)
-		{
-			if (a[j] > a[i])
-			{
-				swap(&a[j], &a[i]);
-			}
-			j++;
-		}
-		j = 0;
-		i++;
+		stacks->b_stack[i] = stacks->b_stack[i - 1];
+		i--;
 	}
-	return ;
+	stacks->b_stack[0] = tmp;
+}
+
+void		exc_rrr_ch(t_stacks *stacks)
+{
+	int	i;
+	int	tmp;
+	
+	if(stacks->a_size > 1)
+	{
+		i = stacks->a_size - 1;
+		tmp = stacks->a_stack[i];
+		while (i-- > 0)
+		{
+			stacks->a_stack[i + 1] = stacks->a_stack[i];
+		}
+		stacks->a_stack[0] = tmp;
+	}
+	if(stacks->b_size > 1)
+	{
+		i = stacks->b_size - 1;
+		tmp = stacks->b_stack[i];
+		while(i > 0)
+		{
+			stacks->b_stack[i] = stacks->b_stack[i - 1];
+			i--;
+		}
+		stacks->b_stack[0] = tmp;
+	}
 }

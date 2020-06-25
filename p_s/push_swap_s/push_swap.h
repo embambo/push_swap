@@ -6,84 +6,88 @@
 /*   By: embambo <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/22 13:25:57 by embambo           #+#    #+#             */
-/*   Updated: 2020/06/15 12:23:59 by embambo          ###   ########.fr       */
+/*   Updated: 2020/06/25 13:54:35 by embambo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-# include <stdlib.h>
-# include <string.h>
-# include <unistd.h>
 # include "../libft/libft.h"
+# include <stdlib.h>
+# define max_int 2147483647
+#define min_int -2147483647
 
-# define INT_MAX 2147483647
-# define INT_MIN -2147483648
-
-typedef struct	s_array
+typedef struct	s_stacks
 {
-	int			*array_a;
-	int			*array_b;
-	int			*array_c;
-	int			size_a;
-	int			size_b;
-	int			size_c;
-}				t_array;
+	int		*a_stack;
+	int		*b_stack;
+	int		a_size;
+	int		b_size;
+}			t_stacks;
 
-t_array			*parse_args(int argc, char **argv, t_array *array, int x);
+typedef struct	s_moves
+{
+	int	a_moves;
+	int	b_moves;
+	int	c_moves;
+	int	tot;
+	int	elem;
+	char	*a_rot;
+	char	*b_rot;
+	char	*c_rot;
+}			t_moves;
 
-void			init_array_struct(t_array *array, int argc, int x);
-void			print_stack(int *a, int len);
-void			sort_5(t_array *array);
-void			partition(t_array *array, int i, int j);
-void			push_to_b(t_array *array);
-void			ra_counter(t_array *array, int counter);
-void			rra_counter(t_array	*array, int counter);
-void			push_to_b(t_array *array);
-void			portions(t_array *array);
-void			bubble_sort(int *a, int len);
-void			chunks(t_array *array);
-void			operations_h(t_array *array);
-void			operations_h2(t_array *array);
-void			rb_counter(t_array *array, int counter);
-void			rrb_counter(t_array *array, int counter);
-void			push_back_to_a(t_array *array, int *b, int len);
-void			pa_counter(t_array *array, int counter);
-void			sort_5_helper1(t_array *array);
-void			sort_5_helper2(t_array *array);
-void			operations_h1(t_array *array);
-void			operations_h3(t_array *array);
-void			sort_5_helper1(t_array *array);
-void			sort_5_helper2(t_array *array);
-void			free_array(t_array *array);
-void			sort_3(t_array	*array);
-void			ft_sb(t_array *array);
-void			free_array(t_array	*array);
-void			sort_5_helper5(t_array *array);
-void			check_av(t_array *array, char **argv, int argc);
-void			sort(t_array *array);
-void			indexes_for_500(t_array *array, int *d);
-void			portions_500(t_array *array);
+/* exc_instruction_ch.c*/
+void	exc_sa_ch(t_stacks *stacks);
+void	exc_sb_ch(t_stacks *stacks);
+void	exc_ss_ch(t_stacks *stacks);
+void	exc_pa_ch(t_stacks *stacks);
+void	exc_pb_ch(t_stacks *stacks);
+/* exc_ra_ch*/
+void	exc_ra_ch(t_stacks *stacks);
+void	exc_rb_ch(t_stacks *stacks);
+void	exc_rr_ch(t_stacks *stacks);
+/*exc_rrr_ch */
+void		exc_rra_ch(t_stacks *stacks);
+void		exc_rrb_ch(t_stacks *stacks);
+void		exc_rrr_ch(t_stacks *stacks);
+/* gnl */
 
-int				max_elem(int *array, int len);
-int				is_sorted(int *array, int len);
-int				get_next_line(const int fd, char **line);
+/* help sort */
+int		find_max_num(int *stack, int size);
+int		find_min_num(int *stack, int size);
+void		first_min(t_stacks *stacks);
+/* insttructions.c */
+void		sa(t_stacks *stacks);
+void		sb(t_stacks *stacks);
+void		ss(t_stacks *stacks);
+void		pa(t_stacks *stack);
+void		pb(t_stacks *stacks);
+/* is_sort.c */
+int	is_it_sorted(int *stacks, int size);
+void	delete_stacks(t_stacks **stacks);
+void	delete_moves(t_moves **moves);
+/* least5_moves_betweenA_B.c */
+t_moves		*least_moves_betweenA_B(t_stacks *stacks);
+/* more_instructions.c */
+void	ra(t_stacks *stacks);
+void	rb(t_stacks *stacks);
+void	rr(t_stacks *stacks);
+/* more_instructions_more.c */
+void	rra(t_stacks *stacks);
+void	rrb(t_stacks *stacks);
+void	rrr(t_stacks *stacks);
+/*find_rot */
+int		find_a_rot(int len, int position, char **rot);
+int		find_b_rot(int len, int position, char **rot);
+/* sort.c */
+void		sort(t_stacks *stacks);
+/* sort_large.c */
+void		sort_large(t_stacks *stack);
+/* stacks.c */
+void		check_argv(t_stacks *stacks, char **argv, int argc);
+/*check if dup */
+int		check_if_dup(int argc, char **argv);
 
-void			ft_sa(t_array *array);
-void			ft_sb(t_array *array);
-void			ft_ss(t_array *array);
-void			ft_pa(t_array *array);
-void			ft_pb(t_array *array);
-void			ft_ra(t_array *array);
-void			ft_rb(t_array *array);
-void			ft_rr(t_array *array);
-void			ft_rra(t_array *array);
-void			ft_rrb(t_array *array);
-void			ft_rrr(t_array *array);
-
-int				ft_arrlen(char **arr);
-
-int				portions_helper(int *uns, int *sort, int *d, int len);
-int				portions_from_end(int *uns, int *sort, int *d, int len);
 #endif

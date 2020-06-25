@@ -6,36 +6,73 @@
 /*   By: embambo <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/31 14:34:17 by embambo           #+#    #+#             */
-/*   Updated: 2020/06/15 12:20:45 by embambo          ###   ########.fr       */
+/*   Updated: 2020/06/25 12:10:05 by embambo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void		ra_counter(t_array *array, int counter)
+void	rra(t_stacks *stacks)
 {
-	while (counter >= 1)
+	int i;
+	int tmp;
+
+	if (stacks->a_size < 2)
+		return ;
+	i = stacks->a_size - 1;
+	tmp = stacks->a_stack[i];
+	while (i > 0)
 	{
-		ft_ra(array);
-		counter--;
+		stacks->a_stack[i] = stacks->a_stack[i - 1];
+		i--;
 	}
+	stacks->a_stack[0] = tmp;
+	ft_putstr("rra\n");
 }
 
-void		rb_counter(t_array *array, int counter)
+void	rrb(t_stacks *stacks)
 {
-	while (counter >= 1)
+	int i;
+	int tmp;
+
+	if (stacks->b_size < 2)
+		return ;
+	i = stacks->b_size - 1;
+	tmp = stacks->b_stack[i];
+	while (i > 0)
 	{
-		ft_rb(array);
-		counter--;
+		stacks->b_stack[i] = stacks->b_stack[i - 1];
+		i--;
 	}
+	stacks->b_stack[0] = tmp;
+	ft_putstr("rrb\n");
 }
 
-void		pa_counter(t_array *array, int counter)
+void	rrr(t_stacks *stacks)
 {
-	while (counter >= 1)
+	int i;
+	int tmp;
+
+	if (stacks->a_size > 1)
 	{
-		ft_pa(array);
-		counter--;
+		i = stacks->a_size - 1;
+		tmp = stacks->a_stack[i];
+		while (i-- > 0)
+		{
+			stacks->a_stack[i + 1] = stacks->a_stack[i];
+		}
+		stacks->a_stack[0] = tmp;
 	}
-	return ;
+	if (stacks->b_size > 1)
+	{
+		i = stacks->b_size - 1;
+		tmp = stacks->b_stack[i];
+		while (i > 0)
+		{
+			stacks->b_stack[i] = stacks->b_stack[i - 1];
+			i--;
+		}
+		stacks->b_stack[0] = tmp;
+	}
+	ft_putstr("rrr\n");
 }
