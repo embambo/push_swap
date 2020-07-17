@@ -5,71 +5,57 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: embambo <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/18 13:55:06 by embambo           #+#    #+#             */
-/*   Updated: 2020/06/25 12:07:10 by embambo          ###   ########.fr       */
+/*   Created: 2019/09/04 11:07:55 by embambo           #+#    #+#             */
+/*   Updated: 2020/06/15 12:18:57 by embambo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	exc_ra_ch(t_stacks *stacks)
+int			portions_helper(int *uns, int *sort, int *d, int len)
 {
 	int i;
-	int tmp;
+	int k;
+	int from;
+	int to;
 
-	if (stacks->a_size < 2)
-		return ;
-	i = 1;
-	tmp = stacks->a_stack[0];
-	while (i < stacks->a_size)
+	from = d[5];
+	to = d[6];
+	i = 0;
+	while (i < len - 1)
 	{
-		stacks->a_stack[i - 1] = stacks->a_stack[i];
+		k = from;
+		while (k < to)
+		{
+			if (uns[i] == sort[k])
+				return (i);
+			k++;
+		}
 		i++;
 	}
-	stacks->a_stack[i - 1] = tmp;
+	return (-1);
 }
 
-void	exc_rb_ch(t_stacks *stacks)
+int			portions_from_end(int *uns, int *sort, int *d, int len)
 {
 	int i;
-	int tmp;
+	int k;
+	int from;
+	int to;
 
-	if (stacks->b_size < 2)
-		return ;
-	i = 1;
-	tmp = stacks->b_stack[0];
-	while (i < stacks->b_size)
+	from = d[5];
+	to = d[6];
+	i = len - 1;
+	while (i >= 0)
 	{
-		stacks->b_stack[i - 1] = stacks->b_stack[i];
-		i++;
-	}
-	stacks->b_stack[i - 1] = tmp;
-}
-
-void	exc_rr_ch(t_stacks *stacks)
-{
-	int i;
-	int tmp;
-
-	if (stacks->a_size > 1)
-	{
-		i = 1;
-		tmp = stacks->a_stack[0];
-		while (i++ < stacks->a_size)
+		k = from;
+		while (k < to)
 		{
-			stacks->a_stack[i - 2] = stacks->a_stack[i - 1];
+			if (uns[i] == sort[k])
+				return (i);
+			k++;
 		}
-		stacks->a_stack[i - 2] = tmp;
+		i--;
 	}
-	if (stacks->b_size > 1)
-	{
-		i = 1;
-		tmp = stacks->b_stack[0];
-		while (i < stacks->b_size)
-		{
-			stacks->b_stack[i - 1] = stacks->b_stack[i];
-			i++;
-		}
-		stacks->b_stack[i - 1] = tmp;
-	}
+	return (-1);
 }

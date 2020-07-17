@@ -6,70 +6,76 @@
 /*   By: embambo <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 11:07:55 by embambo           #+#    #+#             */
-/*   Updated: 2020/06/25 12:04:52 by embambo          ###   ########.fr       */
+/*   Updated: 2020/07/17 14:13:42 by embambo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include "push_swap.h"
 
-void		exc_rra_ch(t_stacks *stacks)
+void		swap(int *a, int *b)
 {
-	int	i;
-	int	tmp;
+	int temp;
 
-	if(stacks->a_size < 2)
-		return ;
-	i = stacks->a_size - 1;
-	tmp = stacks->a_stack[i];
-	while(i > 0)
-	{
-		stacks->a_stack[i] = stacks->a_stack[i - 1];
-		i--;
-	}
-	stacks->a_stack[0] = tmp;
+	temp = *a;
+	*a = *b;
+	*b = temp;
 }
 
-void		exc_rrb_ch(t_stacks *stacks)
+void		bubble_sort(int *a, int len)
 {
-	int	i;
-	int	tmp;
+	int i;
+	int j;
 
-	if(stacks->b_size < 2)
-		return ;
-	i = stacks->b_size - 1;
-	tmp = stacks->b_stack[i];
-	while(i > 0)
+	j = 0;
+	i = 0;
+	while (i < len)
 	{
-		stacks->b_stack[i] = stacks->b_stack[i - 1];
-		i--;
+		while (j < len + 1)
+		{
+			if (a[j] > a[i])
+			{
+				swap(&a[j], &a[i]);
+			}
+			j++;
+		}
+		j = 0;
+		i++;
 	}
-	stacks->b_stack[0] = tmp;
+	return ;
 }
 
-void		exc_rrr_ch(t_stacks *stacks)
+static void		ft_reset(_Bool *wrd_first, int *cntr)
 {
-	int	i;
-	int	tmp;
-	
-	if(stacks->a_size > 1)
+	*wrd_first = 0;
+	*cntr = 0;
+}
+
+char			*ft_nxt_num_adrs(char *s, _Bool reset)
+{
+	static int		cntr;
+	static _Bool	wrd_first;
+	char			*num;
+
+	num = NULL;
+	if (reset)
 	{
-		i = stacks->a_size - 1;
-		tmp = stacks->a_stack[i];
-		while (i-- > 0)
-		{
-			stacks->a_stack[i + 1] = stacks->a_stack[i];
-		}
-		stacks->a_stack[0] = tmp;
+		ft_reset(&wrd_first, &cntr);
+		return (num);
 	}
-	if(stacks->b_size > 1)
+	if ((*s == '+' || *s == '-' || (*s >= '0' && *s <= '9')) && !wrd_first)
 	{
-		i = stacks->b_size - 1;
-		tmp = stacks->b_stack[i];
-		while(i > 0)
-		{
-			stacks->b_stack[i] = stacks->b_stack[i - 1];
-			i--;
-		}
-		stacks->b_stack[0] = tmp;
+		while (((s[cntr] >= '0' && s[cntr] <= '9') || s[cntr] == '+' ||
+				s[cntr] == '-') && s[cntr])
+			++cntr;
+		wrd_first = 1;
+		return (s);
 	}
+	while (((s[cntr] >= 9 && s[cntr] <= 13) || s[cntr] == 32) && s[cntr])
+		++cntr;
+	num = s + cntr;
+	while (((s[cntr] >= '0' && s[cntr] <= '9') || s[cntr] == '+' ||
+			s[cntr] == '-') && s[cntr])
+		++cntr;
+	return (num);
 }

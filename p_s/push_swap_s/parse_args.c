@@ -6,123 +6,107 @@
 /*   By: embambo <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/13 08:39:49 by embambo           #+#    #+#             */
-/*   Updated: 2020/06/25 15:19:34 by embambo          ###   ########.fr       */
+/*   Updated: 2020/07/17 16:08:24 by embambo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include <stdio.h>
+#include <unistd.h>
 
-static int	int_validate(char **split, char *nbr, int bgn)
+static int			validate_args(char **argv, char *arg, int begin)
 {
 	int i;
 
 	i = 0;
-	while (nbr[i] == '-' || nbr[i] == '+')
+	while (*arg && arg[i]  != '\0')
 	{
-		if (!ft_isdigit(nbr[i + 1]))
-			return (0);
-		i++;
-	}
-	while (nbr && nbr[i] != '\0')
-	{
-		if (!ft_isdigit(nbr[i]))
-			return (0);
-		i++;
-	}
-	if (ft_ato_longlong(nbr) > 2147483647 || ft_ato_longlong(nbr) < -2147483647)
-		return (0);
-	while (split[bgn] && split && nbr)
-	{
-		if (ft_strequ(split[bgn], nbr))
-			return (0);
-		bgn++;
-	}
-	return (1);
-}
-
-static	int	build_stacks(t_stacks *stacks, char **split, int count)
-{
-	int	i;
-
-	i = -1;
-	stacks->a_stack = (int*)malloc(sizeof(int)* count);
-	stacks->b_stack = (int*)ft_memalloc(sizeof(int) * count);
-	stacks->a_size = count;
-	stacks->b_size = 0;
-	while(++i < count)
-	{
-		if(int_validate(split, split[i], i + 1))
-			stacks->a_stack[i] = ft_atoi(split[i]);
-		else
+		if (ft_atoi(arg) > 2147483647 || ft_atoi(arg) < INT_MIN)
 		{
-			delete_stacks(&stacks);
-			ft_putstr_fd("Error\n", 2);
-			exit(1);
+			if (!ft_isdigit(arg[i]) && arg[i] != '-')
+				return (0);
 		}
+		i++;
+	}
+	while (argv[begin] && argv && arg)
+	{
+		if (ft_strequ(argv[begin], arg))
+			return (0);
+		begin++;
 	}
 	return (1);
 }
 
-static int	split_count(char **split)
+void				init_array_struct(t_array *array, int argc, int x)
 {
-	int	count;
-
-	count = 0;
-	while(*(split++))
-		count++;
-	return (count);
+	array->array_a = (int*)malloc(sizeof(int) * argc);
+	array->array_b = (int*)malloc(sizeof(int) * argc);
+	array->array_c = (int*)malloc(sizeof(int) * argc);
+	if (x == 0)
+	{
+		array->size_a = argc;
+		array->size_b = 0;
+		array->size_c = argc;
+	}
+	else
+	{
+		array->size_a = argc - 1;
+		array->size_b = 0;
+		array->size_c = argc - 1;
+	}
 }
 
-static	void	delete_split(char ***split)
+void				print_stack(int *a, int len)
 {
-	int	i;
-	
+	int i;
+
 	i = 0;
-	if(*split)
-	{
-		while((*split)[i])
-			free((*split)[i++]);
-		free(*split);
-		*split = NULL;
-	}
-}
-
-
-void		check_argv(t_stacks *stacks, char **argv, int argc)
-{
-	char	**split;
-
-	split = NULL;
-	if(argc == 2)
-	{
-		split = ft_strsplit(argv[1], ' ');
-		if(!build_stacks(stacks, split, split_count(split)))
-		{
-			delete_split(&split);
-			exit(1);
-		}
-		delete_split(&split);
-	}
-	else if (!build_stacks(stacks, (argv + 1), argc - 1))
+	if (a < 0)
 		exit(1);
+	while (i <= len - 1)
+	{
+		ft_putnbr(a[i++]);
+		ft_putstr(" ");
+	}
+	write(1, "\n", 1);
 	return ;
 }
 
-int		check_if_dup(int argc, char **argv)
+t_array				*parse_args(int argc, char **argv, t_array *array, int x)
 {
 	int i;
-	int j;
-	i = 1;
-	while (i < argc - 1)
+	int	num_count;
+	int	cntr;
+
+	i = 0;
+	while (i < argc - x)
 	{
-		j = i + 1;
-		while (j < argc)
+		if (validate_args(argv, argv[i], i + x))
 		{
-			if (ft_atoi(argv[j]) == ft_atoi(argv[i]))
-				return (1);
-			j++;
+			array->array_a[i] = ft_atoi(argv[i + x]);
+			array->array_c[i] = ft_atoi(argv[i + x]);
+		}
+		else if (argc == 2)
+		{
+			num_count = ft_count_numbs(argv[1]);
+			array->array_a = malloc(sizeof(int) * num_count);
+			cntr = -1;
+			while (++cntr < num_count)
+				(array->array_a)[cntr] = ft_atoi(ft_nxt_num_adrs(argv[1], 0));
+			array->array_b = malloc(sizeof(int) * num_count);
+			array->size_a = 0;
+			array->size_b = num_count;
+			array->size_c = num_count;
+		}
+		else
+		{
+			free_array(array);
+			delete_stacks(&array);
+			ft_putstr_fd("Error\n", 2);
+			exit (1);
 		}
 		i++;
 	}
-	return (0);
+	return (array);
 }
+

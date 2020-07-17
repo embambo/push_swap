@@ -6,34 +6,26 @@
 /*   By: embambo <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/31 14:27:36 by embambo           #+#    #+#             */
-/*   Updated: 2020/06/25 12:10:16 by embambo          ###   ########.fr       */
+/*   Updated: 2020/06/15 12:21:05 by embambo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int		find_a_rot(int len, int position, char **rot)
+void		rra_counter(t_array *array, int counter)
 {
-	if(position > len / 2)
+	while (counter >= 1)
 	{
-		*rot  = ft_strcpy(*rot, "rra");
-		if(len > 2)
-			position = len - position;
+		ft_rra(array);
+		counter--;
 	}
-	else
-		*rot = ft_strcpy(*rot, "ra");
-	return (position);
 }
 
-int		find_b_rot(int len, int position, char **rot)
+void		rrb_counter(t_array *array, int counter)
 {
-	if(position > len / 2)
+	while (counter >= 1)
 	{
-		*rot = ft_strcpy(*rot, "rrb");
-		if(len > 2)
-			position = len - position;
+		ft_rrb(array);
+		counter--;
 	}
-	else
-		*rot = ft_strcpy(*rot, "rb");
-	return (position);
 }

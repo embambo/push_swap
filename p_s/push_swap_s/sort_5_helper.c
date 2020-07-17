@@ -6,36 +6,72 @@
 /*   By: embambo <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 11:51:59 by embambo           #+#    #+#             */
-/*   Updated: 2020/06/25 12:10:34 by embambo          ###   ########.fr       */
+/*   Updated: 2020/06/15 12:24:30 by embambo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static	void		sort_3(t_stacks *stacks)
+void			sort_5_helper1(t_array *array)
 {
-	int	max_i;
+	int i;
 
-	if(stacks->a_size == 2)
+	i = 0;
+	if (array->array_a[0] > array->array_b[0])
 	{
-		sa(stacks);
+		ft_pa(array);
 		return ;
 	}
-	max_i = find_max_num(stacks->a_stack, stacks->a_size);
-	if(max_i == 0)
-		ra(stacks);
-	if(max_i == 1)
-		rra(stacks);
-	if(stacks->a_stack[0] > stacks->a_stack[1])
-		sa(stacks);
+	if (array->array_b[0] > array->array_a[0] &&
+			array->array_b[0] < array->array_a[i + 1])
+	{
+		operations_h3(array);
+		return ;
+	}
+	if (array->array_b[0] < array->array_a[array->size_a - 1] &&
+			array->array_a[0] < array->array_b[0] &&
+			array->array_b[0] > array->array_a[i + 1])
+	{
+		operations_h(array);
+		return ;
+	}
+	if (array->array_b[0] > array->array_a[array->size_a - 1])
+	{
+		operations_h1(array);
+	}
 }
 
-void		sort(t_stacks *stacks)
+void			sort_5_helper2(t_array *array)
 {
-	if(is_it_sorted(stacks->a_stack, stacks->a_size) && stacks->b_size == 0)
+	int i;
+	int j;
+
+	i = 0;
+	j = array->size_a;
+	if (array->array_a[0] > array->array_b[0])
+		ft_pa(array);
+	if (array->array_b[0] > array->array_a[0] &&
+			array->array_a[i + 1] > array->array_b[0])
+	{
+		operations_h3(array);
 		return ;
-	if(stacks->a_size <= 3)
-		return (sort_3(stacks));
-	else
-		sort_large(stacks);
+	}
+	if (array->array_b[0] > array->array_a[i + 1] &&
+			array->array_b[0] < array->array_a[j - 1])
+	{
+		operations_h2(array);
+		return ;
+	}
+	if (array->array_b[0] > array->array_a[array->size_a - 1])
+	{
+		operations_h1(array);
+		return ;
+	}
+}
+
+void			sort_5_helper5(t_array *array)
+{
+	ft_pb(array);
+	ft_pb(array);
+	return ;
 }
