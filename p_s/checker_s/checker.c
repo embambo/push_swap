@@ -6,62 +6,141 @@
 /*   By: embambo <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 13:06:58 by embambo           #+#    #+#             */
-/*   Updated: 2020/06/20 10:07:52 by embambo          ###   ########.fr       */
+/*   Updated: 2020/06/18 10:11:27 by embambo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../shared_s/checker.h"
+/*
+** CHECKER
+*/
 
-static int		ft_check(int ac, char **av)
+#include "../shared_s/push_swap.h"
+
+static void		ft_use_commands(t_oper *commands, t_stack *stks)
 {
-	int			ret;
-	char		*str;
+	t_oper		*copy;
+	void		(*oper[11])(t_stack*);
 
-	if (ac == 2 && ft_strcmp(av[1], "-v") == 0)
-		return (-1);
-	if (ac == 2 && (ret = ft_check_arg(av[1])) < 3)
-		if (ret == -1)
-		{
-			ft_putstr_fd("Error\n", 2);
-			return (-1);
-		}
-	if (ac > 2 && (str = ft_join_args(av)) &&
-		(ret = ft_check_arg(str)) < 3)
+	copy = commands;
+	oper[0] = &ft_sa;
+	oper[1] = &ft_sb;
+	oper[2] = &ft_ss;
+	oper[3] = &ft_pa;
+	oper[4] = &ft_pb;
+	oper[5] = &ft_ra;
+	oper[6] = &ft_rb;
+	oper[7] = &ft_rr;
+	oper[8] = &ft_rra;
+	oper[9] = &ft_rrb;
+	oper[10] = &ft_rrr;
+	while (copy)
 	{
-		if (ret == -1)
-		{
-			ft_putstr_fd("Error\n", 2);
-			ft_memdel((void **)(&str));
-			return (-1);
-		}
-		ft_memdel((void **)(&str));
+		oper[copy->command](stks);
+		copy = copy->next;
 	}
-	return (0);
+	if (ft_is_stack_in_order(stks) == 1)
+		ft_putstr("OK\n");
+	else
+		ft_putstr("KO\n");
 }
 
-static void		ft_free_stacks(t_stacks *stacks)
+void				printing_stack2(int a, int size)
 {
-	ft_memdel((void **)(&stacks->stk_a));
-	ft_memdel((void **)(&stacks->stk_b));
-	ft_memdel((void **)(&stacks));
+	int i;
+
+	i = 0;
+	if (a < 0)
+		exit(1);
+	while (i <= size - 1)
+	{
+		ft_putnbr(a);
+		ft_putstr(",");
+		ft_putnbr(size);
+	}
+	write(1, "\n", 1);
+	return ;
 }
 
-int				main(int ac, char **av)
+static int		ft_command_index(char *str)
 {
-	t_stacks	*stacks;
-
-	if (ac < 2)
+	if (ft_strcmp(str, "sa") == 0)
 		return (0);
-	if (ft_check(ac, av) == -1)
+	else if (ft_strcmp(str, "sb") == 0)
+		return (1);
+	else if (ft_strcmp(str, "ss") == 0)
+		return (2);
+	else if (ft_strcmp(str, "pa") == 0)
+		return (3);
+	else if (ft_strcmp(str, "pb") == 0)
+		return (4);
+	else if (ft_strcmp(str, "ra") == 0)
+		return (5);
+	else if (ft_strcmp(str, "rb") == 0)
+		return (6);
+	else if (ft_strcmp(str, "rr") == 0)
+		return (7);
+	else if (ft_strcmp(str, "rra") == 0)
+		return (8);
+	else if (ft_strcmp(str, "rrb") == 0)
+		return (9);
+	else if (ft_strcmp(str, "rrr") == 0)
+		return (10);
+	else
 		return (-1);
-	stacks = ft_build_stacks(ac, av);
-	if (ft_do_ops(av, stacks) == -1)
+}
+
+static int		ft_read_arguments(t_oper **commands)
+{
+	t_oper		*new;
+	char		*argument;
+	int			error;
+
+	*commands = NULL;
+	while (1)
 	{
-		ft_free_stacks(stacks);
-		return (-1);
+		error = get_next_line(0, &argument);
+		if (error == -1)
+		{
+			ft_free_commands(*&commands);
+			return (-1);
+		}
+		if (*argument == '\0')
+			break ;
+		new = ft_new_oper(argument);
+		new->command = ft_command_index(argument);
+		if (new->command == -1)
+		{
+			ft_free_commands(*&commands);
+			return (-1);
+		}
+		ft_add_oper(*&commands, &new);
 	}
-	ft_validate_stack(stacks);
-	ft_free_stacks(stacks);
-//	sleep(60);
+	return (1);
+}
+
+int				main(int argc, char **argv)
+{
+	int			*tab;
+	int			*flags;
+	t_stack		*stks;
+	t_oper		*commands;
+
+	if (argc <= 1)
+		return (0);
+	stks = NULL;
+	if (ft_validator(&argc, argv, &tab, &flags) == -1)
+		ft_putstr_fd("Error\n", 2);
+	else if (argc <= 1 || (argc <= 2 && flags[0]) || (argc <= 2 && flags[1]))
+		;
+	else
+	{
+		if (!(stks = ft_new_stks(*&tab, argc - flags[0] - flags[1], flags)))
+			ft_putstr_fd("Error\n", 2);
+		else if (ft_read_arguments(&commands) == -1)
+			ft_putstr_fd("Error\n", 2);
+		else
+			ft_use_commands(commands, stks);
+	}
+	ft_free_all(tab, stks, &commands, flags);
 	return (0);
 }
