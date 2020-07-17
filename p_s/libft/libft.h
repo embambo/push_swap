@@ -6,7 +6,7 @@
 /*   By: embambo <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 15:33:12 by embambo           #+#    #+#             */
-/*   Updated: 2020/06/25 16:53:12 by embambo          ###   ########.fr       */
+/*   Updated: 2020/07/15 13:55:40 by embambo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int					ft_tolower(int c);
 int					ft_islower(int c);
 int					ft_isupper(int c);
 int					ft_isspace(int c);
+long long			ft_atolonglong(char *str);
 
 void				*ft_memalloc(size_t size);
 void				ft_memdel(void **ap);
