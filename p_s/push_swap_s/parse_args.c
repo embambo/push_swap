@@ -6,7 +6,7 @@
 /*   By: embambo <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/13 08:39:49 by embambo           #+#    #+#             */
-/*   Updated: 2020/07/17 16:08:24 by embambo          ###   ########.fr       */
+/*   Updated: 2020/07/18 10:15:08 by embambo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ t_array				*parse_args(int argc, char **argv, t_array *array, int x)
 		}
 		i++;
 	}
+	free(array->array_a);
+	free(array->array_b);
 	return (array);
 }
 

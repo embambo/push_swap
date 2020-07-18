@@ -6,7 +6,7 @@
 /*   By: embambo <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/16 12:34:22 by embambo           #+#    #+#             */
-/*   Updated: 2020/07/17 16:14:50 by embambo          ###   ########.fr       */
+/*   Updated: 2020/07/18 10:15:58 by embambo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,6 @@ int		main(int argc, char **argv)
 	sort(stack);
 	//print_stack(stack->array_a, stack->size_a);
 	free_array(stack);
-	sleep(100);
+	//sleep(100);
 	return (0);
 }
